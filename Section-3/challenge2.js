@@ -26,8 +26,8 @@ console.log(totals)
 
 
 /*
+ESERCITAZIONE
 Una compagnia di noleggio auto applica le seguenti regole:
-
 * Se il noleggio dura tra 1 e 7 giorni, il costo è 40€ al giorno.
 * Se il noleggio dura più di 7 giorni, il costo è 35€ al giorno.
 

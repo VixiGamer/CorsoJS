@@ -40,6 +40,8 @@ if (mark.calcBMI() > john.calcBMI()) {
 
 
 /*
+!ESERCITAZIONE
+
 Esercizio: Confronto della Velocità Media
 Due ciclisti, Alice e Bob, hanno percorso una certa distanza in un determinato tempo.
 Dati:

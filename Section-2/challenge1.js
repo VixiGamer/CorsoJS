@@ -2,8 +2,8 @@
 !CHALLENGE #1
 Mark and John are trying to compare their BMI (Body Mass Index), which is calculated using the formula: 
 BMI = mass / (height * height) (mass in kg and height in meters).
-§TEST DATA 1: Marks weighs 78 kg and is 1.69 m tall. John weighs 92 kg and is 1.95 m tall.
-§TEST DATA 2: Marks weights 95 kg and is 1.88 m tall. John weights 85 kg and is 1.76 m tall.
+TEST DATA 1: Marks weighs 78 kg and is 1.69 m tall. John weighs 92 kg and is 1.95 m tall.
+TEST DATA 2: Marks weights 95 kg and is 1.88 m tall. John weights 85 kg and is 1.76 m tall.
 */
 
 // Store Mark's and John's mass and height in variables called massMark, heightMark, massJohn and heightJohn.

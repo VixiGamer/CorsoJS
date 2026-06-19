@@ -220,6 +220,3 @@ console.log(drink2)
 
 console.log(`Mi piace bere ${age >= 18 ? "vino" : "acqua"}`)
 */
-
-
-//! S2 - L30
