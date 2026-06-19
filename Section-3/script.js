@@ -9,7 +9,6 @@ if (passTest) hasDriverLincense = true;
 if (hasDriverLincense) console.log("Posso guidare :D")
 */
 
-
 //! S3 - L34 | Functions
 /*
 function logger() {
@@ -25,7 +24,6 @@ function fruitProcessor(pesche, arancie) {
 const spremuta = fruitProcessor(2, 3)
 console.log(spremuta)
 */
-
 
 //! S3 - L35
 /*
@@ -43,7 +41,6 @@ const age2 = calcAge2(2004)
 console.log(age1, age2)
 */
 
-
 //! S3 - L36 | Arrow Function
 /*
 const calcAge3 = birthYear => 2026 - birthYear
@@ -58,7 +55,6 @@ const yearsUntilRetirement = (name, birthYear) => {
 
 console.log(yearsUntilRetirement("Viggo", 2004))
 */
-
 
 //! S3 - L37 | Functions calling other functions
 /*
@@ -76,7 +72,6 @@ function fruitProcessor(pesche, arancie) {
 
 console.log(fruitProcessor(2, 3));
 */
-
 
 //! S3 - L38
 /*
@@ -97,7 +92,6 @@ function yearsUntilRetirement(name, birthYear) {
 console.log(yearsUntilRetirement("Viggo", 2004));
 console.log(yearsUntilRetirement("Dina", 1933));
 */
-
 
 //! S3 - L40 | Array
 /*
@@ -130,5 +124,181 @@ const ages = [calcAge(years[0]), calcAge(years[1]), calcAge(years[years.length -
 console.log(ages)
 */
 
+//! S3 - L41 | push, unshift, pop
+/*
+const friends = ["Linda", "Gioele", "Giuseppe", "Vincenzo"];
+const newLenght = friends.push("Mirko"); //Il push ritorna il numero di elementi ceh ce nell'array dopo aver pushato
+console.log(friends)
+console.log(newLenght)
 
-//! S3 - L41
+friends.unshift("Salvatore")
+console.log(friends)
+
+const popped = friends.pop()    // ritorna l'elemento eliminato
+console.log(friends)
+console.log(popped)
+
+friends.shift()
+console.log(friends)
+
+console.log(friends.indexOf("Vincenzo"))
+console.log(friends.indexOf("Silas"))
+console.log(friends.includes("Silas"))
+
+if (friends.includes("Vincenzo")) {
+    console.log("Hai un amico che si chiama Vincenzo")
+}
+*/
+
+//! S3 - L43/44 | Oggetti
+/*
+const viggo = {
+    name: "Viggo",
+    surname: "Ponturo Nygaard",
+    age: 2026 - 2004,
+    job: "Programmatore",
+    friends: ["Linda", "Gioele", "Giuseppe", "Vincenzo"]
+}
+console.log(viggo)
+console.log(viggo.surname)
+console.log(viggo["name"])
+
+const nameKey = "name"
+console.log(viggo[nameKey])
+console.log(viggo["sur" + nameKey])
+
+const interestedIn = prompt("Cosa vuoi sapere di Viggo? Scegli tra: name, surname, age, job, friends")
+if (viggo[interestedIn]) {
+    console.log(viggo[interestedIn])
+} else {
+    console.log("Wrong request! Scegli tra: name, surname, age, job, friends")
+}
+
+// Per aggiungere elementi al Oggetto
+viggo.location = "Italy"
+viggo.nationality = "Italian & Danish"
+console.log(viggo)
+
+// Mini Challenge
+console.log(`${viggo.name} has ${viggo.friends.length} friends, and his best friend is ${viggo.friends[0]}`)
+*/
+
+//! S3 - L45
+/*
+const viggo = {
+    name: "Viggo",
+    surname: "Ponturo Nygaard",
+    birthyear: 2004,
+    job: "Programmatore",
+    friends: ["Linda", "Gioele", "Giuseppe", "Vincenzo"],
+    hasDriverLicense: true,
+
+    // calcAge: function() {
+    //     return 2026 - this.birthyear
+    // }
+
+    calcAge: function() {
+        this.age = 2026 - this.birthyear
+        return this.age;
+    },
+
+    getSummury: function() {
+        return `${this.name} ha ${this.calcAge()}, ed fa il ${this.job}, e ${this.name} ${this.hasDriverLicense ? "ha": "non ha"} la patente`
+    }
+}
+
+console.log(viggo.calcAge())
+// console.log(viggo["calcAge"](2007))
+console.log(viggo.age)
+
+console.log(viggo.getSummury())
+*/
+
+//! S3 - L47 | for
+/*
+for (let i = 1; i <= 10; i++) {
+    console.log(`Salto ${i}`)
+}
+*/
+
+//! S3 - L48 | for, continue, break
+/*
+const viggo = [
+    "Viggo", 
+    "Ponturo Nygaard", 
+    22, 
+    "Programmatore", 
+    ["Linda", "Gioele", "Giuseppe", "Vincenzo"], 
+    true
+]
+
+const types = new Array()
+
+for (let i = 0; i < viggo.length; i++) {
+    console.log(viggo[i], typeof viggo[i])
+    types.push(typeof viggo[i])
+}
+
+console.log(types)
+
+const years = [1933, 1975, 1963, 2004, 2007]
+const ages = new Array()
+
+for (let i = 0; i < years.length; i++) {
+    let age = 2026 - years[i]
+    ages.push(age)
+}
+console.log(ages)
+
+// continue, break
+console.log("------ONLY STRINGS------") // Stampa solo stringhe
+for (let i = 0; i < viggo.length; i++) {
+    if (typeof viggo[i] !== "string") continue
+    console.log(viggo[i], typeof viggo[i])
+}
+
+console.log("------BREAK WITH NUMBER------") // Si ferma quando incontra il primo numero
+for (let i = 0; i < viggo.length; i++) {
+    if (typeof viggo[i] === "number") break
+    console.log(viggo[i], typeof viggo[i])
+}
+*/
+
+//! S3 - L49 | for dentro un for
+/*
+const viggo = [
+    "Viggo", 
+    "Ponturo Nygaard", 
+    22, 
+    "Programmatore", 
+    ["Linda", "Gioele", "Giuseppe", "Vincenzo"]
+];
+
+for (let i = viggo.length - 1; i >= 0; i--) {
+    console.log(viggo[i])
+}
+
+for (let i = 1; i <= 3; i++) {
+    console.log(`------Starrting Exercise ${i}------`)
+    for (let i = 0; i < 6; i++) {
+        console.log(`Salto ${i}`)
+    }
+}
+*/
+
+//! S3 - L50 | while
+let s = 1;
+while (s <= 10) {
+  // console.log(`Salto ${s}`)
+  s++;
+}
+
+let dice = Math.trunc(Math.random() * 6) + 1;
+
+while (dice !== 6) {
+  console.log(`E uscito ${dice}`);
+  dice = Math.trunc(Math.random() * 6) + 1;
+  if (dice === 6) {
+    console.log("E uscito 6 :D");
+  }
+}
