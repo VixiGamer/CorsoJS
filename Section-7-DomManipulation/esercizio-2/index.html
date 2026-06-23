@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validazione Form JS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Controlla la tua Password</h2>
+        
+        <form id="registerForm">
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Minimo 8 caratteri">
+                <p id="passwordHelp" class="help-text">La password deve contenere almeno 8 caratteri.</p>
+            </div>
+
+            <div class="input-group">
+                <label for="confirmPassword">Conferma Password</label>
+                <input type="password" id="confirmPassword" placeholder="Ripeti la password">
+                <p id="errorMsg" class="error-text hidden">Le password non corrispondono!</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

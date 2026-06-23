@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #eef2f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.calculator {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+    width: 300px;
+}
+
+#screen {
+    background-color: #222;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2rem;
+    text-align: right;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.btn {
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #eceff1;
+    color: #37474f;
+    transition: background 0.1s;
+}
+
+.btn:hover {
+    background-color: #cfd8dc;
+}
+
+.btn.op {
+    background-color: #ff9800;
+    color: white;
+}
+
+.btn.op:hover {
+    background-color: #fb8c00;
+}
+
+.btn.clear {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn.clear:hover {
+    background-color: #d32f2f;
+}
+
+.btn.uguali {
+    background-color: #4caf50;
+    color: white;
+    grid-row: span 2; /* Fa occupare al tasto uguale due righe in altezza */
+    height: 100%;
+}
+
+.btn.uguali:hover {
+    background-color: #388e3c;
+}
