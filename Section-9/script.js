@@ -498,10 +498,6 @@ console.log([...questions.values()]);
 
 
 //! S9 - L128
-
-const flights =
-    '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
-
 const airline = "ITA Airways"
 const plane = "A320"
 
@@ -594,7 +590,7 @@ checkBagage("i have a gun")
 
 
 //! L9 - S130 | Split
-
+/*
 console.log("ciao+come+stai+silas".split("+"));
 console.log("Viggo Ponturo Nygaard".split(" "));
 
@@ -634,3 +630,21 @@ console.log(maskCreditCard(23456788765434567));
 const mes = "Bad weather "
 const longMes = mes.repeat(10)
 console.log(longMes);
+*/
+
+
+//! S9 - L132
+
+const flights =
+    '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+
+const code = (str) => {
+    str.slice(0, 3).toUpperCase()
+}
+
+for (const flight of flights.split("+")) {
+    const [type, from, to, time] = flight.split(";")
+    const output = `${type.startsWith("_Delayed") ? "🛑" : ""} ${type.replaceAll("_", " ")} from ${code(from)} to ${code(to)} (${time.replace(";", "h")})`
+    console.log(output);
+}
