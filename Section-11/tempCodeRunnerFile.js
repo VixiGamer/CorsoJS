@@ -1,1 +1,0 @@
-newDogsJulia.concat(dogsKate)

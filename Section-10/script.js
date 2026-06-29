@@ -148,7 +148,6 @@ book.call(swiss, ...flighData)
 console.log(swiss.bookings);
 
 //§ Bind Method
-
 const bookEw = book.bind(eurowings)
 const bookLH = book.bind(luftansa)
 const bookSW = book.bind(swiss)
