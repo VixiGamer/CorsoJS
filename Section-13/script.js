@@ -8,8 +8,12 @@ const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector(".btn--scroll-to")
-
 const section1 = document.querySelector("#section--1")
+const nav = document.querySelector(".nav")
+const tabs = document.querySelectorAll(".operations__tab")  // Qui seleziono i 3 pulsanti giallo, verde, rosso
+const tabsContainer = document.querySelector(".operations__tab-container")  // Qui prendo il container dei 3 pulsanti
+const tabsContent = document.querySelectorAll(".operations__content")   // Qui prendo il contenuto dei 3 pulsanti
+
 
 const openModal = function (e) {
   e.preventDefault();
@@ -33,6 +37,7 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+//* Button Scrolling
 btnScrollTo.addEventListener("click", (e) => {
   const s1coords = section1.getBoundingClientRect()
   console.log(s1coords);
@@ -59,6 +64,249 @@ btnScrollTo.addEventListener("click", (e) => {
   section1.scrollIntoView({ behavior: "smooth" })
 });
 
+
+//* Page navigation
+/*
+document.querySelectorAll(".nav__link").forEach(function (el) {
+  el.addEventListener("click", function(e) {
+    e.preventDefault()
+    // Cosi praticamente stiamo prendendo attributo "href" del link e poi trovo la parte e ci vato con scrollIntoView
+    const id = this.getAttribute("href")
+    document.querySelector(id).scrollIntoView({behavior: "smooth"})
+  })
+})
+*/
+
+// 1. Add event listener to common parent element
+// 2. Determinate what element originated the event
+//^ EVENT DELEGATION
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  e.preventDefault()
+  // Matching strategy
+  if (e.target.classList.contains("nav__link")) {
+    // Cosi praticamente stiamo prendendo attributo "href" del link e poi trovo la parte e ci vato con scrollIntoView
+    const id = e.target.getAttribute("href")
+    document.querySelector(id).scrollIntoView({behavior: "smooth"})
+  }
+})
+
+
+//^ Tabbed component
+tabsContainer.addEventListener("click", function (e) {
+  const clicked = e.target.closest(".operations__tab")  // Cosi anche se premo il numero mi porta al bottone
+  //console.log(clicked);
+  if (!clicked) return  // Questo serve cosi se premo fuori il bottone non da errore perche ritorna null
+  
+  //§ Active tab
+  // Questo e cosi che quando premo una tab toglo la classe a tutte e poi la metto a quella che mi interessa, cosi da fare lo switch
+  tabs.forEach(t => t.classList.remove("operations__tab--active"))
+  clicked.classList.add("operations__tab--active")
+
+  //§ Remove active class form the content
+  tabsContent.forEach(tbc => tbc.classList.remove("operations__content--active"))
+
+  //§ Active content area
+  document.querySelector(`.operations__content--${clicked.getAttribute("data-tab")}`).classList.add("operations__content--active")
+})
+
+
+//^ Menu fade animation
+function handelerHoverNav(e, op) {
+  if (e.target.classList.contains("nav__link")) {
+    const link = e.target
+    const siblings = link.closest(".nav").querySelectorAll(".nav__link")
+    const logo = link.closest(".nav").querySelector("img")
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = op
+    })
+    logo.style.opacity = op
+  }
+}
+
+nav.addEventListener("mouseover", function (e) {
+  handelerHoverNav(e, 0.5)
+})
+
+nav.addEventListener("mouseout", function (e) {
+  handelerHoverNav(e, 1)
+})
+
+
+//^ Sticky navigationbar
+//§ Intersection observer API
+const header = document.querySelector(".header")
+const navHeight = nav.getBoundingClientRect().height
+
+function stickyNav(entries) {
+  const entry = entries[0]
+  //console.log(entry);
+  if (entry.isIntersecting === false) {
+    nav.classList.add("sticky")
+  }
+  else nav.classList.remove("sticky")
+}
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,    // Esegui la callback quando l'elemento non è visibile.
+  rootMargin: `-${navHeight}px`
+})
+headerObserver.observe(header)
+
+
+//^ Reveal sections
+const allSections = document.querySelectorAll(".section")
+
+function revealSection(entries, obs) {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return
+    entry.target.classList.remove("section--hidden")
+
+    // Quando ho gia "osservato" le sezioni gli dico di non osservarle piu, perche ho gia fatto quello che dovevo
+    obs.unobserve(entry.target)
+  })
+}
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15
+})
+
+allSections.forEach(function (section) {
+  sectionObserver.observe(section)
+  section.classList.add("section--hidden")
+})
+
+
+//^ Lazy loading images
+const imgTragets = document.querySelectorAll("img[data-src]")    // Seleziono tutte le imaggini che hanno come attributo data-src
+
+function loadImg(entries, obs) {
+  const [entry] = entries
+
+  if (!entry.isIntersecting) return
+  // Replace src with data-src
+  entry.target.src = entry.target.dataset.src
+  entry.target.addEventListener("load", function () {
+    entry.target.classList.remove("lazy-img")
+  })
+
+  obs.unobserve(entry.target)
+}
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  rootMargin: "200px"
+})
+imgTragets.forEach(img => {
+  imgObserver.observe(img)
+  
+})
+
+
+//^ Slider
+function slider() {
+  const slides = document.querySelectorAll(".slide")
+  const btnLeft = document.querySelector(".slider__btn--left")
+  const btnRight = document.querySelector(".slider__btn--right")
+  const dotContainer = document.querySelector(".dots")
+
+  let currSlide = 0
+  const maxSlide = slides.length
+
+  //* Functions
+  function goToSlide(slide) {
+    slides.forEach((s, i) => s.style.transform = `translateX(${(i - slide) * 100}%)`)
+  }
+
+  function createDots() {
+    slides.forEach(function (_, i) {
+      dotContainer.insertAdjacentHTML("beforeend",
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      )
+    })
+  }
+
+  function activateDot(slide) {
+    document.querySelectorAll(".dots__dot").forEach(dot => dot.classList.remove("dots__dot--active"))
+    // Qui sto prendendo il pallino corispondente all'immaggine selezionata e gli sto applicando la classe "dots__dot--active"
+    document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add("dots__dot--active")
+  }
+
+  function nextSlide() {
+    if (currSlide === maxSlide - 1) {
+      currSlide = 0
+    } else {
+      currSlide++
+    }
+    goToSlide(currSlide)
+    activateDot(currSlide)
+  }
+
+  function prevSlide(params) {
+    if (currSlide === 0) {
+      currSlide = maxSlide - 1
+    } else {
+      currSlide--
+    }
+    goToSlide(currSlide)
+    activateDot(currSlide)
+  }
+
+  //§ Init function
+  function init() {
+    goToSlide(0)
+    createDots()
+    activateDot(0)
+  }
+  init()
+
+
+  //* Event handelers
+  //§ Next slide
+  btnRight.addEventListener("click", nextSlide)
+  btnLeft.addEventListener("click", prevSlide)
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") {
+      nextSlide()
+      activateDot(currSlide)
+    }
+    if (e.key === "ArrowLeft") {
+      prevSlide()
+      activateDot(currSlide)
+    }
+  })
+
+  //§ Dots
+  dotContainer.addEventListener("click", function (e) {
+    if (e.target.classList.contains("dots__dot")) {
+      currSlide = Number(e.target.dataset.slide)
+      goToSlide(currSlide)
+      activateDot(currSlide)
+    }
+  })
+}
+slider()
+
+//!! ---------------------------------------
+
+document.addEventListener("DOMContentLoaded", function (e) {
+  console.log("HTML parsed and DOM tree built", e);
+})
+
+// Quando tutta la paggina ha finito di caricarsi, fa partire questo evento
+window.addEventListener("load", function (e) {
+  console.log("Page fully loaded", e);
+})
+
+// Quando l'utente sta per lasciare la paggina
+window.addEventListener("beforeunload", function (e) {
+  e.preventDefault()
+  console.log(e);
+  e.returnValue = "";
+})
 
 //! S13 - L198-199 | Selecting, Creating, and Deleating Elements & Styles, Attributes and Classes
 /*
@@ -161,7 +409,7 @@ h1.addEventListener("mouseenter", allertH1)
 */
 
 //! S13 - L203 | Bubbling
-
+/*
 const randomInt = (min = 0, max = 255) => Math.floor(Math.random() * (max - min + 1) + min)
 const randomColor = () => `rgb(${randomInt()}, ${randomInt()}, ${randomInt()})`
 
@@ -188,3 +436,41 @@ document.querySelector(".nav").addEventListener("click", function (e) {
   this.style.backgroundColor = randomColor();
   console.log("NAVBAR", e.target, e.currentTarget);
 })
+  */
+
+//! S13 - L205
+/*
+const h1 = document.querySelector("h1")
+
+//^ Going downwards: child
+console.log(h1.querySelectorAll(".highlight"));
+console.log(h1.childNodes);
+console.log(h1.children);
+h1.firstElementChild.style.color = "white"
+h1.lastElementChild.style.color = "navy"
+
+//^ Going upwards: parets
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+// Trova l'emeneto con la classe header più vicino, rispetto all'elemento h1 (deve essere suo parente)
+h1.closest(".header").style.background = "var(--gradient-secondary)"
+
+// Trova l'elemento h1 piu vicino a h1, percio l'elemento stesso
+h1.closest("h1").style.background = "var(--gradient-primary)"
+
+//^ Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+// Getting all the siblings
+console.log(h1.parentElement.children); 
+
+[...h1.parentElement.children].forEach((el) => {
+  if (el !== h1) el.style.transform = "scale(0.5)"
+})
+*/
+
