@@ -83,7 +83,7 @@ class Car {
 
 
 class ElectricCar extends Car {
-    constructor(brand, model, year, battery){
+    constructor(brand, model, year, battery) {
         super(brand, model, year)
         this.battery = battery
     }
