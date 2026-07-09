@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>TV Explorer</title>
+
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+
+    <body>
+        <header>
+            <h1>🎬 TV Explorer</h1>
+            <p>Search a TV show and discover its cast</p>
+        </header>
+
+        <main>
+            <section class="search-box">
+                <input 
+                    type="text" 
+                    id="showInput" 
+                    placeholder="Enter a TV show..."
+                >
+                <button id="searchBtn">
+                    Search
+                </button>
+            </section>
+            <section id="result" class="result">
+                <p id="textSuggestion">
+                    Search a TV show to see information...
+                </p>
+                <article class="show-card hidden">
+                    <!-- Poster serie -->
+                    <img 
+                        class="show-card__img" 
+                        src="" 
+                        alt="TV Show Poster"
+                    >
+
+                    <!-- Informazioni serie -->
+                    <div class="show-card__data">
+                        <h2 class="show-card__name">
+                            SHOW NAME
+                        </h2>
+
+                        <p class="show-card__row">
+                            🎭 Genre:
+                            <span class="show-card__genre">
+                                GENRE
+                            </span>
+                        </p>
+
+                        <p class="show-card__row">
+                            🌍 Language:
+                            <span class="show-card__language">
+                                LANGUAGE
+                            </span>
+                        </p>
+
+                        <p class="show-card__row">
+                            📅 Released:
+                            <span class="show-card__date">
+                                DATE
+                            </span>
+                        </p>
+
+                        <p class="show-card__row">
+                            ⭐ Rating:
+                            <span class="show-card__rating">
+                                RATING
+                            </span>
+                        </p>
+
+                        <p class="show-card__row">
+                            📺 Status:
+                            <span class="show-card__status">
+                                STATUS
+                            </span>
+                        </p>
+                    </div>
+
+                </article>
+            </section>
+        </main>
+        <script src="script.js"></script>
+    </body>
+</html>
