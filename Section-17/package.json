@@ -1,0 +1,19 @@
+{
+  "name": "section-17",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "Viggo Ponturo Nygaard",
+  "license": "ISC",
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "lodash-es": "^4.18.1"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}
