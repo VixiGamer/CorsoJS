@@ -4,13 +4,50 @@ export default class View {
     _data;
     
     //^ Funzione per far visualizzare una ricetta
-    render(data) {
+    //!! JSDoc
+    /**
+     * Render the recive object to the DOM
+     * @param {Object | Object[]} data  The Data to be rendered (es. recipe)
+     * @param {boolean} [render=true]   If false create markup string instead of creating to the DOM
+     * @returns {undefined | string}    A markup string is returned if 'render = false'
+     * @this {Object} View instance
+     * @author Viggo Ponturo Nygaard
+     * @todo Finish the implementation
+     */
+    render(data, render = true) {
         if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError()
 
         this._data = data;
         const markup = this._generateMarkup();
+
+        if (!render) return markup;
+        
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup)      // E qui inserisco la ricetta
+    }
+
+    update(data) {        
+        this._data = data
+        const newMarkup = this._generateMarkup();
+
+        const newDOM = document.createRange().createContextualFragment(newMarkup)
+        const newElements = Array.from(newDOM.querySelectorAll("*"))
+        const curElements = Array.from(this._parentElement.querySelectorAll("*"))
+
+        newElements.forEach((newEl, i) => {
+            const curEl = curElements[i]
+            //console.log(curEl, newEl.isEqualNode(curEl));
+
+            //§ Update changed TEXT
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue?.trim() !== "") {
+                curEl.textContent = newEl.textContent
+            }
+
+            //§ Update changed ATTRIBUTES
+            if (!newEl.isEqualNode(curEl)) {
+                Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value))
+            }
+        })
     }
 
     //^ Funzione per svuotare il contenitore della ricetta (cosi che si leva il messaggio di cercare una ricetta)
