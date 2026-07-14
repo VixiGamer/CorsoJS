@@ -1,46 +1,78 @@
-const recipeContainer = document.querySelector('.recipe');
+import "core-js/stable"
+import "regenerator-runtime/runtime"
+import * as model from "./model"
+import recipeView from "./views/recipeView.js"
+import searchView from "./views/searchView.js"
+import resultsView from "./views/resultsView.js"
+import paginationView from "./views/paginationView.js"
 
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
-// NEW API URL (instead of the one shown in the video)
-// https://forkify-api.jonas.io
-
-///////////////////////////////////////
-
-async function showRecipe() {
-  
+async function controlRecipes() {
   try {
-    const res = await fetch(
-      //`https://forkify-api.jonas.io/api/v2/recipes/5ed6604591c37cdc054bc886`
-      `https://forkify-api.jonas.io/api/v2/recipes/664c8f193e7aa067e94e856b`
-    )
-    const data = await res.json()
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`)
-    console.log(res, data);
+    const id = window.location.hash.slice(1)
+    console.log(id);
 
-    let recipe = data.data.recipe
-    recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients
-    }
-    console.log(recipe);
+    if (!id) throw new Error(`${data.message} (${res.status})`)
+
+    recipeView.renderSpinner()
+
+    //§ Loading recepice
+    await model.loadRecipe(id)
+
+    //§ Redering recipe
+    recipeView.render(model.state.recipe)
 
   } catch (error) {
-    alert(error)
+    console.error(error);
+    recipeView.renderError();
   }
 }
 
+async function controlSearchResults() {
+  try {
+    resultsView.renderSpinner();
 
-showRecipe()
+    //§ 1. Get search query
+    const querry = searchView.getQuery();
+    if (!querry) return;
+
+    //§ 2. Load search results
+    await model.loadSearchResults(querry)
+
+    //§ 3. Render results
+    resultsView.render(model.getSearchResultPage());
+
+    //§ 4. Render initial pagination buttons
+    paginationView.render(model.state.search)
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function controlPagination(goToPage) {
+  //§ 1. Render NEW results
+  resultsView.render(model.getSearchResultPage(goToPage));
+
+  //§ 2. Render NEW pagination buttons
+  paginationView.render(model.state.search)
+}
+
+function controlServings(newServings) {
+  //§ Update the recipe servings (in state)
+  model.updateServings(newServings)
+
+  //§ Update the recipe view
+  recipeView.render(model.state.recipe)
+}
+
+
+function init() {
+  recipeView.addHandelerRender(controlRecipes);
+  recipeView.addHandelerUpdateServings(controlServings);
+  searchView.addHandelerSearch(controlSearchResults);
+  paginationView.addHandelerClick(controlPagination);
+}
+init();
